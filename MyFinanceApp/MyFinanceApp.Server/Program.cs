@@ -1,13 +1,31 @@
+using AppLibrary.DiConfigs;
+using AppLibrary.Utilities;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<ConfigureServices>();
+//Scoped means a new instance of this repo will always be created
+//builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+RegisterServices.AddServicesToRepositories(builder.Services);
+
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddExceptionHandler<AppExecptionHandler>();
 
 var app = builder.Build();
+
+//app.UseExceptionHandler("/Error");
+app.UseExceptionHandler(
+    new ExceptionHandlerOptions()
+    {
+        AllowStatusCode404Response = true, // important!
+        ExceptionHandlingPath = "/error"
+    }
+);
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -15,8 +33,7 @@ app.UseStaticFiles();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
 }
 
 app.UseHttpsRedirection();
