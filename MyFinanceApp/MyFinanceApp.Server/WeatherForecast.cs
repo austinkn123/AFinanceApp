@@ -1,4 +1,4 @@
-namespace WebApp.Server
+namespace MyFinanceApp.Server
 {
     public class WeatherForecast
     {
