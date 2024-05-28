@@ -7,16 +7,10 @@ namespace MyFianceApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : Controller
+    public class UserController(ILogger<UserController> logger, IUserRepository userRepository) : Controller
     {
-        private readonly ILogger<UserController> _logger;
-        private readonly IUserRepository _userRepository;
-
-        public UserController(ILogger<UserController> logger, IUserRepository userRepository)
-        {
-            _logger = logger;
-            _userRepository = userRepository;
-        }
+        private readonly ILogger<UserController> _logger = logger;
+        private readonly IUserRepository _userRepository = userRepository;
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
