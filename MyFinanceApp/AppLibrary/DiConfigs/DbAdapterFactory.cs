@@ -1,21 +1,19 @@
-﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Insight.Database;
+using Microsoft.Data.SqlClient;
+using Npgsql;
 
-namespace AppLibrary.DiConfigs
+namespace App.Utils
 {
-    public class DbAdapterFactory
+    public static class DbAdapterFactory
     {
-        public static class DapperFactory
+        public static T GetConnectionAs<T>(string connectionString) where T : class
         {
-            public static NpgsqlConnection GetConnection(string connectionString)
-            {
-                return new NpgsqlConnection(connectionString);
-            }
+            return new NpgsqlConnectionStringBuilder(connectionString).As<T>();
         }
 
+        static DbAdapterFactory()
+        {
+            Insight.Database.Providers.PostgreSQL.PostgreSQLInsightDbProvider.RegisterProvider();
+        }
     }
 }

@@ -1,20 +1,17 @@
 ﻿using AppLibrary.Models;
 using Dapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Insight.Database;
+using System.Data;
 
 namespace AppLibrary.Adapters
 {
     [DatabaseService(ConnectionStrings.Finance)]
     public abstract class FinanceAdapter
     {
+        public abstract IDbConnection GetConnection();
         public async Task<IEnumerable<User>> GetAll()
         {
-            using var connection = _context.CreateConnection();
-            var users = await connection.QueryAsync<User>(getAllUsers);
+            var users = await GetConnection().QuerySqlAsync<User>(getAllUsers);
             return users;
         }
 
@@ -27,7 +24,7 @@ namespace AppLibrary.Adapters
                   ,email 
                   ,first_name
                   ,last_name
-            FROM public.user
+            FROM public.users
         ";
 
         private const string getUserById = @"

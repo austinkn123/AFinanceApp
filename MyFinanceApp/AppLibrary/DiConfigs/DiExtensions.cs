@@ -1,8 +1,8 @@
-﻿using AppLibrary;
+﻿using App.Utils;
+using AppLibrary;
 using AppLibrary.DiConfigs;
 using Dapper;
 using System.Reflection;
-using static AppLibrary.DiConfigs.DbAdapterFactory;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -12,7 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void RegisterServices(this IServiceCollection services, Assembly assembly, Settings settings)
         {
-            var dapperFactory = typeof(DapperFactory).GetMethod(nameof(DapperFactory.GetConnection));
+            var sqlServerFactory = typeof(DbAdapterFactory).GetMethod(nameof(DbAdapterFactory.GetConnectionAs));
 
             foreach (var type in assembly.GetExportedTypes())
             {
@@ -35,7 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                         var connectionString = settings.DatabaseConnectionStrings[databaseServiceAttribute.ConnectionStringName];
 
-                        var genericMethod = dapperFactory.MakeGenericMethod(type);
+                        var genericMethod = sqlServerFactory.MakeGenericMethod(type);
                         return genericMethod.Invoke(null, new object[] { connectionString });
                     });
                 }

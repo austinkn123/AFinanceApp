@@ -24,13 +24,13 @@ DiConfiguration.ConfigureServices(builder.Services, settings);
 var app = builder.Build();
 
 //app.UseExceptionHandler("/Error");
-app.UseExceptionHandler(
-    new ExceptionHandlerOptions()
-    {
-        AllowStatusCode404Response = true, // important!
-        ExceptionHandlingPath = "/error"
-    }
-);
+//app.UseExceptionHandler(
+//    new ExceptionHandlerOptions()
+//    {
+//        AllowStatusCode404Response = true, // important!
+//        ExceptionHandlingPath = "/error"
+//    }
+//);
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
