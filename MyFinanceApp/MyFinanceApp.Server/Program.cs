@@ -1,5 +1,6 @@
 using AppLibrary.DiConfigs;
 using AppLibrary.Utilities;
+using MyFinanceApp.Server.Site;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddExceptionHandler<AppExecptionHandler>();
+
+var settings = new Settings(builder.Configuration);
+
+DiConfiguration.ConfigureServices(builder.Services, settings);
 
 var app = builder.Build();
 
