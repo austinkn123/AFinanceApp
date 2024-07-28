@@ -1,6 +1,6 @@
 ﻿using AppLibrary.IRepositories;
 using AppLibrary.Models;
-using AppLibrary.Repositories;
+using AppLibrary.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MyFianceApi.Controllers
@@ -12,11 +12,18 @@ namespace MyFianceApi.Controllers
         private readonly ILogger<UserController> _logger = logger;
         private readonly IUserRepository _userRepository = userRepository;
 
+        //[HttpGet]
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    var users = await _userRepository.GetAll();
+        //    return Ok(users);
+        //}
+
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllUsers([FromServices] GetAllUsers getAllUsers)
         {
-            var users = await _userRepository.GetAll();
-            return Ok(users);
+            var tmp = await getAllUsers.Execute();
+            return Ok(tmp);
         }
 
 

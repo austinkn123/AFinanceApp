@@ -1,5 +1,6 @@
 using AppLibrary.DiConfigs;
 using AppLibrary.Utilities;
+using MyFinanceApp.Server.Site;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,16 +17,20 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddExceptionHandler<AppExecptionHandler>();
 
+var settings = new Settings(builder.Configuration);
+
+DiConfiguration.ConfigureServices(builder.Services, settings);
+
 var app = builder.Build();
 
 //app.UseExceptionHandler("/Error");
-app.UseExceptionHandler(
-    new ExceptionHandlerOptions()
-    {
-        AllowStatusCode404Response = true, // important!
-        ExceptionHandlingPath = "/error"
-    }
-);
+//app.UseExceptionHandler(
+//    new ExceptionHandlerOptions()
+//    {
+//        AllowStatusCode404Response = true, // important!
+//        ExceptionHandlingPath = "/error"
+//    }
+//);
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
