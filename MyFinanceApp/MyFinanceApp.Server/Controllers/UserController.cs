@@ -21,10 +21,7 @@ namespace MyFianceApi.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers([FromServices] GetAllUsers getAllUsers)
-        {
-            var tmp = await getAllUsers.Execute();
-            return Ok(tmp);
-        }
+            =>  Ok(await getAllUsers.Execute());
 
 
         [HttpGet("get-user/{id}")]

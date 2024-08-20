@@ -1,11 +1,11 @@
 ﻿using AppLibrary.Models;
-using Dapper;
+using ConnectionStrings;
 using Insight.Database;
 using System.Data;
 
 namespace AppLibrary.Adapters
 {
-    [DatabaseService(ConnectionStrings.Finance)]
+    [DatabaseService(ConnectionString.Finance)]
     public abstract class FinanceAdapter
     {
         public abstract IDbConnection GetConnection();

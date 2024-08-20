@@ -6,6 +6,6 @@ namespace AppLibrary.UseCases
     [TransientService]
     public class GetAllUsers(FinanceAdapter _financeAdapter)
     {
-        public Task<IEnumerable<User>> Execute() => _financeAdapter.GetAll();
+        public async Task<IEnumerable<User>> Execute() => await _financeAdapter.GetAll();
     }
 }
