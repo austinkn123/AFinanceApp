@@ -8,11 +8,12 @@ The `MyFinanceApp` solution consists of three main projects:
 3. **MyFinanceApp.Server** - An ASP.NET Core back-end project.
 
 ## Project Details
+This app is a showcase of clean architecture. My goal with this app is to improve my skills as a developer while at the same time I get a new kick ass finance app. The app itself is to log, track, and keep up with the user's finance activites. The main skills I want to improve on is getting more familiar with this specific DI setup, work on UI/UX design, and start getting my feet wet with azure or aws DevOps side of things.
 
 ### 1. AppLibrary
 **Type:** Class Library
 
-**Purpose:** This project contains shared code and business logic that can be reused by other projects in the solution, such as `MyFinanceApp.Server`.
+**Purpose:** This project contains shared code and business logic that can be reused by other projects in the solution, such as `MyFinanceApp.Server`. 
 
 ### 2. MyFinanceApp.client
 **Type:** JavaScript/TypeScript Project

@@ -1,6 +1,8 @@
 ﻿namespace ConnectionStrings
 {
 
+namespace Dapper
+{
     //an attribute applied to the DatabaseServiceAttribute class. It specifies that DatabaseServiceAttribute can only be applied to classes.
     //AttributeUsage is a predefined attribute that controls how the custom attribute can be used.
     //now an adapter class can be decorated with a database connection attribute

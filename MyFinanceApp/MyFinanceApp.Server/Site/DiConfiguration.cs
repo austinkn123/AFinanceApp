@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using FluentValidation;
+using System.Reflection;
 
 namespace MyFinanceApp.Server.Site
 {
