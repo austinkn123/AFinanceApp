@@ -1,49 +1,40 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import { useState, useEffect } from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { lightTheme, darkTheme } from './Theme.js';
+import './assets/scss/main.scss';
 
 function App() {
-    const [forecasts, setForecasts] = useState();
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        return localStorage.getItem('darkMode') === 'true';
+    });
+
+    const toggleTheme = () => {
+        setIsDarkMode(prevMode => {
+            const newMode = !prevMode;
+            localStorage.setItem('darkMode', newMode);
+            return newMode;
+        });
+    };
 
     useEffect(() => {
-        populateWeatherData();
-    }, []);
+        document.body.className = isDarkMode ? 'dark-mode' : '';
+    }, [isDarkMode]);
 
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tabelLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+    {console.log("TESTING") }
 
     return (
-        <div>
-            <h1 id="tabelLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
+        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+            <CssBaseline />
+            <div>
+                <button onClick={toggleTheme}>
+                    Switch to {isDarkMode ? 'Light' : 'Dark'} Mode
+                </button>
+                Helloooo
+                {/* Your app components go here */}
+            </div>
+        </ThemeProvider>
     );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        setForecasts(data);
-    }
 }
 
 export default App;
