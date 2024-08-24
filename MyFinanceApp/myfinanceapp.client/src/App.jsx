@@ -1,36 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from './Theme.js';
-import './assets/scss/main.scss';
+import NavBar from './components/organisms/NavBar.jsx';
 
 function App() {
-    const [isDarkMode, setIsDarkMode] = useState(() => {
-        return localStorage.getItem('darkMode') === 'true';
-    });
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
-    const toggleTheme = () => {
-        setIsDarkMode(prevMode => {
-            const newMode = !prevMode;
-            localStorage.setItem('darkMode', newMode);
-            return newMode;
-        });
-    };
-
-    useEffect(() => {
-        document.body.className = isDarkMode ? 'dark-mode' : '';
-    }, [isDarkMode]);
-
-    {console.log("TESTING") }
 
     return (
         <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-            <CssBaseline />
+            <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
             <div>
-                <button onClick={toggleTheme}>
-                    Switch to {isDarkMode ? 'Light' : 'Dark'} Mode
-                </button>
-                Helloooo
+                <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+                <h1>
+                    Helloootrhrteh
+                </h1>
+                
                 {/* Your app components go here */}
             </div>
         </ThemeProvider>
