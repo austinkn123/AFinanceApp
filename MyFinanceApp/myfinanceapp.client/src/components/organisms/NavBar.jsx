@@ -15,9 +15,14 @@ import MenuItem from '@mui/material/MenuItem';
 import ApiOutlinedIcon from '@mui/icons-material/ApiOutlined';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import { Link } from 'react-router-dom';
+
  
-const pages = ['Home', 'Spending', 'Bugdget', 'Goals', 'News'];
-const settings = ['Profile', 'Logout'];
+const pages = ['Home', 'Spending', 'Budget', 'Goals', 'News'];
+const settings = [
+    { name: 'Profile', path: 'profile' },
+    { name: 'Log out', path: 'login' },
+];
 
 const NavBar = ({ isDarkMode, setIsDarkMode }) => {
      const [anchorElNav, setAnchorElNav] = useState(false);
@@ -77,7 +82,12 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                              }}
                          >
                              {pages.map((page) => (
-                                 <MenuItem key={page} onClick={() => setAnchorElNav(null)} >
+                                 <MenuItem
+                                     key={page}
+                                     component={Link}
+                                     to={`/${page.toLowerCase()}`}
+                                     onClick={() => setAnchorElNav(null)}
+                                 >
                                      <Typography textAlign="center">{page}</Typography>
                                  </MenuItem>
                              ))}
@@ -104,6 +114,8 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                          {pages.map((page) => (
                              <Button
                                  key={page}
+                                 component={Link}
+                                 to={`/${page.toLowerCase()}`}
                                  onClick={() => setAnchorElNav(null)}
                                  sx={{ mr: 1, my: 2, color: 'white', display: 'block' }}
                              >
@@ -146,8 +158,13 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                              onClose={() => setAnchorElUser(null)}
                          >
                              {settings.map((setting) => (
-                                 <MenuItem key={setting} onClick={() => setAnchorElUser(null)}>
-                                     <Typography textAlign="center">{setting}</Typography>
+                                 <MenuItem
+                                     key={setting}
+                                     onClick={() => setAnchorElUser(null)}
+                                     component={Link}
+                                     to={`/${setting.path}`}
+                                 >
+                                     <Typography textAlign="center">{setting.name}</Typography>
                                  </MenuItem>
                              ))}
                          </Menu>
