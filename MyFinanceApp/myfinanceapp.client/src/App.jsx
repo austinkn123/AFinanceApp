@@ -32,7 +32,7 @@ function App() {
                 <Router>
                     <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
                     <Routes>
-                        <Route path='/Home' element={<Home />} />
+                        <Route path='/' element={<Home />} />
                         <Route path='/spending' element={<SpendingLogs />} />
                         <Route path='/budget' element={<BudgetPlans />} />
                         <Route path='/goals' element={<Goals />} />

@@ -17,11 +17,17 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { Link } from 'react-router-dom';
 
- 
-const pages = ['Home', 'Spending', 'Budget', 'Goals', 'News'];
+
+const pages = [
+    { name: 'Home', path: '' },
+    { name: 'Spending', path: '/spending' },
+    { name: 'Budget', path: '/budget' },
+    { name: 'Goals', path: '/goals' },
+    { name: 'News', path: '/news' },
+];
 const settings = [
-    { name: 'Profile', path: 'profile' },
-    { name: 'Log out', path: 'login' },
+    { name: 'Profile', path: '/profile' },
+    { name: 'Log out', path: '/login' },
 ];
 
 const NavBar = ({ isDarkMode, setIsDarkMode }) => {
@@ -38,7 +44,7 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                          variant="h6"
                          noWrap
                          component="a"
-                         href="#app-bar-with-responsive-menu"
+                         href=""
                          sx={{
                              mr: 2,
                              display: { xs: 'none', md: 'flex' },
@@ -85,10 +91,10 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                                  <MenuItem
                                      key={page}
                                      component={Link}
-                                     to={`/${page.toLowerCase()}`}
+                                     to={`${page.path}`}
                                      onClick={() => setAnchorElNav(null)}
                                  >
-                                     <Typography textAlign="center">{page}</Typography>
+                                     <Typography textAlign="center">{page.name}</Typography>
                                  </MenuItem>
                              ))}
                          </Menu>
@@ -97,7 +103,7 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                      <Typography
                          variant="h8"
                          component="a"
-                         href="#app-bar-with-responsive-menu"
+                         href=""
                          sx={{
                              mr: 2,
                              display: { xs: 'flex', md: 'none' },
@@ -115,11 +121,11 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                              <Button
                                  key={page}
                                  component={Link}
-                                 to={`/${page.toLowerCase()}`}
+                                 to={`${page.path}`}
                                  onClick={() => setAnchorElNav(null)}
                                  sx={{ mr: 1, my: 2, color: 'white', display: 'block' }}
                              >
-                                 {page}
+                                 {page.name}
                              </Button>
                          ))}
                      </Box>
@@ -162,7 +168,7 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                                      key={setting}
                                      onClick={() => setAnchorElUser(null)}
                                      component={Link}
-                                     to={`/${setting.path}`}
+                                     to={`${setting.path}`}
                                  >
                                      <Typography textAlign="center">{setting.name}</Typography>
                                  </MenuItem>
