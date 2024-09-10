@@ -1,5 +1,6 @@
-import { Typography, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import DangerousIcon from '@mui/icons-material/Dangerous';
+import PageHeader from '../atoms/PageHeader';
 
 const NotFound = () => {
     return (
@@ -12,13 +13,10 @@ const NotFound = () => {
             color="text.primary"
             flexDirection="column"
         >
-            <Typography variant="h1" component="h1" gutterBottom>
-                404
-            </Typography>
-            <DangerousIcon sx={{ fontSize: 100, color: 'error.main', mb: 4 }} />
-            <Typography variant="h4" component="p">
-                Page Not Found
-            </Typography>
+            <PageHeader title="404" size="h1" />
+            <DangerousIcon sx={{ fontSize: 100, color: 'error.main', my: 4 }} />
+            <PageHeader title="Page Not Found" size="h4" />
+
         </Box>
     );
 };
