@@ -1,15 +1,15 @@
 ﻿using AppLibrary.IRepositories;
 using AppLibrary.Models;
-using AppLibrary.UseCases;
+using AppLibrary.UseCases.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MyFianceApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController(ILogger<UserController> logger, IUserRepository userRepository) : Controller
+    public class UsersController(ILogger<UsersController> logger, IUserRepository userRepository) : Controller
     {
-        private readonly ILogger<UserController> _logger = logger;
+        private readonly ILogger<UsersController> _logger = logger;
         private readonly IUserRepository _userRepository = userRepository;
 
         //[HttpGet]

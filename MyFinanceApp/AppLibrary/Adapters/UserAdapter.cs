@@ -6,13 +6,12 @@ using System.Data;
 namespace AppLibrary.Adapters
 {
     [DatabaseService(ConnectionString.Finance)]
-    public abstract class FinanceAdapter
+    public abstract class UserAdapter
     {
         public abstract IDbConnection GetConnection();
         public async Task<IEnumerable<User>> GetAll()
         {
-            var users = await GetConnection().QuerySqlAsync<User>(getAllUsers);
-            return users;
+            return await GetConnection().QuerySqlAsync<User>(getAllUsers);
         }
 
         #region queries
