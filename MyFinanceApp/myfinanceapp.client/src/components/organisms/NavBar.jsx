@@ -81,15 +81,15 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                                  vertical: 'top',
                                  horizontal: 'left',
                              }}
-                             open={anchorElNav}
+                             open={Boolean(anchorElNav)}
                              onClose={() => setAnchorElNav(null)}
                              sx={{
                                  display: { xs: 'block', md: 'none' },
                              }}
                          >
-                             {pages.map((page) => (
+                             {pages.map((page, index) => (
                                  <MenuItem
-                                     key={page}
+                                     key={`${page}-${index}` }
                                      component={Link}
                                      to={`${page.path}`}
                                      onClick={() => setAnchorElNav(null)}
@@ -117,9 +117,9 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                          My Finance Pal
                      </Typography>
                      <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                         {pages.map((page) => (
+                         {pages.map((page, index) => (
                              <Button
-                                 key={page}
+                                 key={`${page}-${index}`}
                                  component={Link}
                                  to={`${page.path}`}
                                  onClick={() => setAnchorElNav(null)}
@@ -160,12 +160,12 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                                  vertical: 'top',
                                  horizontal: 'right',
                              }}
-                             open={anchorElUser}
+                             open={Boolean(anchorElUser)}
                              onClose={() => setAnchorElUser(null)}
                          >
-                             {settings.map((setting) => (
+                             {settings.map((setting, index) => (
                                  <MenuItem
-                                     key={setting}
+                                     key={`${setting}-${index}`}
                                      onClick={() => setAnchorElUser(null)}
                                      component={Link}
                                      to={`${setting.path}`}

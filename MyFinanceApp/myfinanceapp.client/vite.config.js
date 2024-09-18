@@ -43,12 +43,12 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/weatherforecast': {
-                target,
-                secure: false
+            '/api': {
+                target: target,         // Forward to ASP.NET Core server
+                changeOrigin: true,     // Ensure the origin header matches the target
+                secure: false           // Allow self-signed certificates
             }
         },
-        port: 5173,
         https: {
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
