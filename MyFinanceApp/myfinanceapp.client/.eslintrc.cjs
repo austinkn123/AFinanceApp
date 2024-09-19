@@ -17,5 +17,15 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-  },
+    'no-unused-vars': 'off',
+    },
+    overrides: [
+        {
+            files: ['*.jsx'],
+            rules: {
+                'no-unused-vars': 'off',
+                'react/prop-types': 'off',
+            },
+        },
+    ],
 }
