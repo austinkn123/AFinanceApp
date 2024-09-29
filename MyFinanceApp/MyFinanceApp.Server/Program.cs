@@ -1,5 +1,8 @@
+using Amazon.CognitoIdentityProvider;
+using Amazon.Extensions.CognitoAuthentication;
 using AppLibrary.DiConfigs;
 using AppLibrary.Utilities;
+using Microsoft.Extensions.Options;
 using MyFinanceApp.Server.Site;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ConfigureServices>();
 //Scoped means a new instance of this repo will always be created
 //builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+// Add services to the container.
+builder.Services.Configure<AwsCognitoSettings>(builder.Configuration.GetSection("AWS"));
+builder.Services.AddSingleton<IAmazonCognitoIdentityProvider, AmazonCognitoIdentityProviderClient>();
+builder.Services.AddSingleton<CognitoUserPool>(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<AwsCognitoSettings>>().Value;
+    var provider = sp.GetRequiredService<IAmazonCognitoIdentityProvider>();
+    return new CognitoUserPool(settings.UserPoolId, settings.ClientId, provider, settings.ClientSecret);
+});
 
 RegisterServices.AddServicesToRepositories(builder.Services);
 
