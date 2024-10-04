@@ -14,6 +14,21 @@ namespace AppLibrary.Adapters
             return await GetConnection().QuerySqlAsync<User>(getAllUsers);
         }
 
+        public async Task Add(User user)
+        {
+            var expando = user.Expand(new
+            {
+                user.Cognito_User_Id,
+                user.User_Name,
+                user.Phone_Number,
+                user.Email,
+                user.First_Name,
+                user.Last_Name
+
+            });
+            await GetConnection().ExecuteSqlAsync(signUpUserSQL, expando);
+        }   
+
         #region queries
         private const string getAllUsers = @"
             SELECT user_id
@@ -38,17 +53,37 @@ namespace AppLibrary.Adapters
             WHERE user_id = @id
         ";
 
-        private const string addUser = @"
+        //private const string addUser = @"
+        //    INSERT INTO public.users (
+        //        user_name
+        //        ,password
+        //        ,phone_number
+        //        ,email 
+        //        ,first_name
+        //        ,last_name
+        //    ) VALUES (
+        //        @User_Name
+        //        ,@Password
+        //        ,@Phone_Number
+        //        ,@Email
+        //        ,@First_Name
+        //        ,@Last_Name
+        //    );
+        //";
+
+        private const string signUpUserSQL = @"
             INSERT INTO public.users (
-                user_name
+                cognito_user_id
+                ,user_name
                 ,password
                 ,phone_number
                 ,email 
                 ,first_name
                 ,last_name
             ) VALUES (
-                @User_Name
-                ,@Password
+                @Cognito_User_Id
+                ,@User_Name
+                ,@Password  
                 ,@Phone_Number
                 ,@Email
                 ,@First_Name

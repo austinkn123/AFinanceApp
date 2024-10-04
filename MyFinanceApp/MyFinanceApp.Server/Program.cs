@@ -7,23 +7,43 @@ using MyFinanceApp.Server.Site;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//-----------------------------------------------------
 //DAPPER REPOSITORY SETUP EXPERIMENTATION
 // Add services to the container.
 builder.Services.AddSingleton<ConfigureServices>();
 //Scoped means a new instance of this repo will always be created
 //builder.Services.AddTransient<IUserRepository, UserRepository>();
+RegisterServices.AddServicesToRepositories(builder.Services);
+//-----------------------------------------------------
+
+
+
+
 
 // Add services to the container.
-builder.Services.Configure<AwsCognitoSettings>(builder.Configuration.GetSection("AWS"));
+// This line configures the AwsCognitoSettings class to bind to the "AWS" section of the appsettings.json file.
+// The settings will be available for dependency injection.
+builder.Services.Configure<AwsCognitoSettings>(builder.Configuration.GetSection("AWSCognito"));
+
+// This line registers the AmazonCognitoIdentityProviderClient as a singleton service.
 builder.Services.AddSingleton<IAmazonCognitoIdentityProvider, AmazonCognitoIdentityProviderClient>();
+
+// This line registers the CognitoUserPool as a singleton service.
+// The lambda function is used to configure the CognitoUserPool instance.
 builder.Services.AddSingleton<CognitoUserPool>(sp =>
 {
+    // Retrieve the AwsCognitoSettings instance from the service provider.
     var settings = sp.GetRequiredService<IOptions<AwsCognitoSettings>>().Value;
+
+    // Retrieve the IAmazonCognitoIdentityProvider instance from the service provider.
     var provider = sp.GetRequiredService<IAmazonCognitoIdentityProvider>();
+
+    // Create and return a new instance of CognitoUserPool using the retrieved settings and provider.
     return new CognitoUserPool(settings.UserPoolId, settings.ClientId, provider, settings.ClientSecret);
 });
 
-RegisterServices.AddServicesToRepositories(builder.Services);
+
+
 
 
 builder.Services.AddControllers();
