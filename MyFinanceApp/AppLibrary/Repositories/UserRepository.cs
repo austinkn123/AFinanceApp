@@ -1,6 +1,6 @@
 ﻿using AppLibrary.DiConfigs;
 using AppLibrary.IRepositories;
-using AppLibrary.Models;
+using AppLibrary.Models.User;
 using Dapper;
 using System;
 using System.Collections.Generic;

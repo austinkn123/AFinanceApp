@@ -1,4 +1,4 @@
-﻿using AppLibrary.Models;
+﻿using AppLibrary.Models.User;
 using ConnectionStrings;
 using Insight.Database;
 using System.Data;

@@ -1,5 +1,5 @@
 ﻿using AppLibrary.Adapters;
-using AppLibrary.Models;
+using AppLibrary.Models.User;
 
 namespace AppLibrary.UseCases.Users
 {

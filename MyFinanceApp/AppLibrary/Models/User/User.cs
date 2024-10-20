@@ -1,4 +1,4 @@
-﻿namespace AppLibrary.Models
+﻿namespace AppLibrary.Models.User
 {
     public class User
     {
@@ -10,6 +10,13 @@
         public string? First_Name { get; set; }
         public string? Last_Name { get; set; }
         public Guid Cognito_User_Id { get; set; }
+    }
+
+    public  class UserLogin
+    {
+        public required string User_Name { get; set; }
+        public required string Password { get; set; }
+
     }
 
 }
