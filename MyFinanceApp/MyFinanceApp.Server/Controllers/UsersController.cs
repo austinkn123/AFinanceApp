@@ -1,15 +1,12 @@
 ﻿using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Extensions.CognitoAuthentication;
+using AppLibrary.Models.User;
 using AppLibrary.UseCases.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Identity.Data;
-using AppLibrary.Models.User;
-using Amazon.CognitoIdentity.Model;
-using Amazon.Runtime;
 
 namespace MyFianceApi.Controllers
 {
@@ -99,7 +96,7 @@ namespace MyFianceApi.Controllers
             try
             {
                 var authResponse = await _cognitoIdentityProvider.AdminInitiateAuthAsync(authRequest);
-                return Ok(new { Token = authResponse.AuthenticationResult.IdToken });
+                return Ok(new { Token = authResponse.AuthenticationResult.AccessToken });
             }
             catch (AmazonCognitoIdentityProviderException ex) when (ex.ErrorCode == "NotAuthorizedException")
             {
@@ -121,25 +118,31 @@ namespace MyFianceApi.Controllers
             }
         }
 
-        //[HttpPost("logout")]
-        //public async Task<IActionResult> Logout([FromBody] LogoutRequest model)
-        //{
-        //    var globalSignOutRequest = new GlobalSignOutRequest
-        //    {
-        //        AccessToken = model.AccessToken
-        //    };
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] UserToken model)
+        {
+            var globalSignOutRequest = new GlobalSignOutRequest
+            {
+                AccessToken = model.Token
+            };
 
-        //    try
-        //    {
-        //        await _cognitoIdentityProvider.GlobalSignOutAsync(globalSignOutRequest);
-        //        return Ok("User logged out successfully.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "An error occurred during logout.");
-        //        return StatusCode(500, "Internal server error.");
-        //    }
-        //}
+            try
+            {
+                var response = await _cognitoIdentityProvider.GlobalSignOutAsync(globalSignOutRequest);
+                _logger.LogInformation("Logout successful for token: {Token}", model.Token);
+                return Ok("User logged out successfully.");
+            }
+            catch (NotAuthorizedException ex)
+            {
+                _logger.LogError(ex, "Invalid access token: {Token}", model.Token);
+                return Unauthorized("Invalid access token.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred during logout.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
 
         //[HttpPost("sign-up-google")]
         //public async Task<IActionResult> SignUpWithGoogle([FromBody] GoogleSignUpRequest request, [FromServices] SignUpUser signUpUser)
