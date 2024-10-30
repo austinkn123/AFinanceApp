@@ -20,30 +20,34 @@ import NotFound from './components/pages/NotFound.jsx';
 
 function App() {
     const [isDarkMode, setIsDarkMode] = useState(false);
-
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     return (
         <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
             <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
             <div>
-               
-
-
                 <Router>
-                    <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+                    {isAuthenticated && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />}
                     <Routes>
-                        <Route path='/' element={<Home />} />
-                        <Route path='/spending' element={<SpendingLogs />} />
-                        <Route path='/budget' element={<BudgetPlans />} />
-                        <Route path='/goals' element={<Goals />} />
-                        <Route path='/news' element={<NewsFeed />} />
-                        <Route path='/profile' element={<Profile />} />
-                        <Route path='/login' element={<Login />} />
-                        <Route path='/not-found' element={<NotFound />} />
-                        <Route path='*' element={<Navigate to='/not-found' />} />
+                        {!isAuthenticated ? (
+                            <>
+                                <Route path='/login' element={<Login setAuth={setIsAuthenticated} />} />
+                                <Route path='*' element={<Navigate to='/login' />} />
+                            </>
+                        ) : (
+                            <>
+                                <Route path='/' element={<Home />} />
+                                <Route path='/spending' element={<SpendingLogs />} />
+                                <Route path='/budget' element={<BudgetPlans />} />
+                                <Route path='/goals' element={<Goals />} />
+                                <Route path='/news' element={<NewsFeed />} />
+                                <Route path='/profile' element={<Profile />} />
+                                <Route path='/not-found' element={<NotFound />} />
+                                <Route path='*' element={<Navigate to='/not-found' />} />
+                            </>
+                        )}
                     </Routes>
                 </Router>
-                {/* Your app components go here */}
             </div>
         </ThemeProvider>
     );

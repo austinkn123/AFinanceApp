@@ -3,6 +3,7 @@ using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Extensions.CognitoAuthentication;
 using AppLibrary.Models.User;
 using AppLibrary.UseCases.Users;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
@@ -144,85 +145,66 @@ namespace MyFianceApi.Controllers
             }
         }
 
-        //[HttpPost("sign-up-google")]
-        //public async Task<IActionResult> SignUpWithGoogle([FromBody] GoogleSignUpRequest request, [FromServices] SignUpUser signUpUser)
+        //[HttpPost("google-sign-up")]
+        //public async Task<IActionResult> GoogleSignUp([FromBody] string idToken, [FromServices] SignUpUser signUpUser)
         //{
-        //    // Step 2: Verify Google token
-        //    var googleUser = await VerifyGoogleToken(request.GoogleToken);
-        //    if (googleUser == null)
-        //    {
-        //        return BadRequest("Invalid Google token.");
-        //    }
-
-        //    // Step 3: Sign up or sign in the user in Cognito
-        //    var signUpRequest = new SignUpRequest
-        //    {
-        //        ClientId = _userPool.ClientID,
-        //        Username = googleUser.Email,
-        //        Password = Guid.NewGuid().ToString(), // Generate a random password
-        //        UserAttributes = new List<AttributeType>
-        //{
-        //    new AttributeType { Name = "email", Value = googleUser.Email },
-        //    new AttributeType { Name = "given_name", Value = googleUser.FirstName },
-        //    new AttributeType { Name = "family_name", Value = googleUser.LastName },
-        //    new AttributeType { Name = "name", Value = $"{googleUser.FirstName} {googleUser.LastName}" }
-        //}
-        //    };
-
-        //    var signUpResponse = await _cognitoIdentityProvider.SignUpAsync(signUpRequest);
-
-        //    // Store user in the database
+        //    var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
         //    var user = new User
         //    {
-        //        User_Name = googleUser.Email,
-        //        Email = googleUser.Email,
-        //        First_Name = googleUser.FirstName,
-        //        Last_Name = googleUser.LastName,
-        //        Cognito_User_Id = Guid.Parse(signUpResponse.UserSub)
+        //        User_Name = payload.Email,
+        //        Email = payload.Email,
+        //        First_Name = payload.GivenName,
+        //        Last_Name = payload.FamilyName,
+        //        Cognito_User_Id = Guid.NewGuid() // Generate a new GUID for the user
         //    };
 
         //    await signUpUser.Execute(user);
         //    return Ok();
         //}
 
-        //[HttpPost("login-google")]
-        //public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginRequest request)
+        //[HttpPost("google-login")]
+        //public async Task<IActionResult> GoogleLogin([FromBody] string idToken)
         //{
-        //    // Step 1: Verify Google token
-        //    var googleUser = await VerifyGoogleToken(request.GoogleToken);
-        //    if (googleUser == null)
-        //    {
-        //        return BadRequest("Invalid Google token.");
-        //    }
+        //    var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
+        //    var secretHash = ComputeSecretHash(_userPool.ClientID, payload.Email, _clientSecret);
 
-        //    // Step 2: Authenticate the user with Cognito
         //    var authRequest = new AdminInitiateAuthRequest
         //    {
         //        UserPoolId = _userPool.PoolID,
         //        ClientId = _userPool.ClientID,
         //        AuthFlow = AuthFlowType.ADMIN_NO_SRP_AUTH,
         //        AuthParameters = new Dictionary<string, string>
-        //{
-        //    { "USERNAME", googleUser.Email },
-        //    { "PASSWORD", googleUser.Email } // Use email as a password for simplicity
-        //}
+        //        {
+        //            { "USERNAME", payload.Email },
+        //            { "SECRET_HASH", secretHash }
+        //        }
         //    };
 
         //    try
         //    {
         //        var authResponse = await _cognitoIdentityProvider.AdminInitiateAuthAsync(authRequest);
-        //        return Ok(new { Token = authResponse.AuthenticationResult.IdToken });
+        //        return Ok(new { Token = authResponse.AuthenticationResult.AccessToken });
         //    }
-        //    catch (NotAuthorizedException)
+        //    catch (AmazonCognitoIdentityProviderException ex) when (ex.ErrorCode == "NotAuthorizedException")
         //    {
         //        return Unauthorized("Invalid username or password.");
         //    }
+        //    catch (AmazonCognitoIdentityProviderException ex) when (ex.ErrorCode == "InvalidParameterException")
+        //    {
+        //        return BadRequest("Invalid parameters provided.");
+        //    }
+        //    catch (AmazonCognitoIdentityProviderException ex)
+        //    {
+        //        _logger.LogError(ex, "Cognito error during login: {ErrorCode}, {ErrorMessage}", ex.ErrorCode, ex.Message);
+        //        return StatusCode(500, $"Authentication error: {ex.ErrorCode}");
+        //    }
         //    catch (Exception ex)
         //    {
-        //        _logger.LogError(ex, "An error occurred during Google login.");
+        //        _logger.LogError(ex, "An unexpected error occurred during login.");
         //        return StatusCode(500, "Internal server error.");
         //    }
         //}
+
 
         private string ComputeSecretHash(string clientId, string userName, string clientSecret)
         {
