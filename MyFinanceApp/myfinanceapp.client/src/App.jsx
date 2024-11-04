@@ -9,6 +9,7 @@ import {
     Routes,
     Navigate
 } from "react-router-dom";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import Home from './components/pages/Home.jsx';
 import SpendingLogs from './components/pages/SpendingLog.jsx';
 import BudgetPlans from './components/pages/BudgetPlans.jsx';
@@ -23,33 +24,37 @@ function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     return (
-        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-            <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
-            <div>
-                <Router>
-                    {isAuthenticated && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />}
-                    <Routes>
-                        {!isAuthenticated ? (
-                            <>
-                                <Route path='/login' element={<Login setAuth={setIsAuthenticated} />} />
-                                <Route path='*' element={<Navigate to='/login' />} />
-                            </>
-                        ) : (
-                            <>
-                                <Route path='/' element={<Home />} />
-                                <Route path='/spending' element={<SpendingLogs />} />
-                                <Route path='/budget' element={<BudgetPlans />} />
-                                <Route path='/goals' element={<Goals />} />
-                                <Route path='/news' element={<NewsFeed />} />
-                                <Route path='/profile' element={<Profile />} />
-                                <Route path='/not-found' element={<NotFound />} />
-                                <Route path='*' element={<Navigate to='/not-found' />} />
-                            </>
-                        )}
-                    </Routes>
-                </Router>
-            </div>
-        </ThemeProvider>
+        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+
+            <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+                <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
+                <div>
+                    <Router>
+                        {isAuthenticated && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />}
+                        <Routes>
+                            {!isAuthenticated ? (
+                                <>
+                                    <Route path='/login' element={<Login setAuth={setIsAuthenticated} />} />
+                                    <Route path='*' element={<Navigate to='/login' />} />
+                                </>
+                            ) : (
+                                <>
+                                    <Route path='/' element={<Home />} />
+                                    <Route path='/spending' element={<SpendingLogs />} />
+                                    <Route path='/budget' element={<BudgetPlans />} />
+                                    <Route path='/goals' element={<Goals />} />
+                                    <Route path='/news' element={<NewsFeed />} />
+                                    <Route path='/profile' element={<Profile />} />
+                                    <Route path='/not-found' element={<NotFound />} />
+                                    <Route path='*' element={<Navigate to='/not-found' />} />
+                                </>
+                            )}
+                        </Routes>
+                    </Router>
+                </div>
+            </ThemeProvider>
+        </GoogleOAuthProvider>
+
     );
 }
 
