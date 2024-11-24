@@ -18,13 +18,16 @@ import NewsFeed from './components/pages/NewsFeed.jsx';
 import Profile from './components/pages/Profile.jsx';
 import Login from './components/pages/Login.jsx';
 import NotFound from './components/pages/NotFound.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    //const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const isAuthenticated = !!sessionStorage.getItem('authToken');
 
     return (
-        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+        <GoogleOAuthProvider clientId="495058288143-kfktsiduls935pmd1g15gmlrp7h96k12.apps.googleusercontent.com">
 
             <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
                 <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
@@ -34,7 +37,7 @@ function App() {
                         <Routes>
                             {!isAuthenticated ? (
                                 <>
-                                    <Route path='/login' element={<Login setAuth={setIsAuthenticated} />} />
+                                    <Route path='/login' element={<Login />} />
                                     <Route path='*' element={<Navigate to='/login' />} />
                                 </>
                             ) : (
@@ -51,6 +54,7 @@ function App() {
                             )}
                         </Routes>
                     </Router>
+                    <ToastContainer />
                 </div>
             </ThemeProvider>
         </GoogleOAuthProvider>

@@ -1,5 +1,5 @@
 import axiosInstance from './shared/axios';
 
 export const getAllGoals = () => {
-    return axiosInstance.get(`users`);
+    return axiosInstance.get(`goals`);
 };
