@@ -28,7 +28,7 @@ function App() {
 
     useEffect(() => {
         setAuth(sessionStorage.getItem('authToken'));
-    }, []);
+    }, [auth]);
 
     return (
         <GoogleOAuthProvider clientId="495058288143-kfktsiduls935pmd1g15gmlrp7h96k12.apps.googleusercontent.com">
@@ -37,17 +37,28 @@ function App() {
                     <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
                     <div>
                         <Router>
-                            {auth && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />}
+                            {auth && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} setAuth={setAuth} />}
                             <Routes>
-                                <Route path='/login' element={<Login />} />
-                                <Route path='/' element={<Home />} />
-                                <Route path='/spending' element={<SpendingLogs />} />
-                                <Route path='/budget' element={<BudgetPlans />} />
-                                <Route path='/goals' element={<Goals />} />
-                                <Route path='/news' element={<NewsFeed />} />
-                                <Route path='/profile' element={<Profile />} />
-                                <Route path='/not-found' element={<NotFound />} />
-                                <Route path='*' element={<Navigate to='/not-found' />} />
+                                {auth ? (
+                                    <>
+                                        <Route path='/' element={<Home />} />
+                                        <Route path='/spending' element={<SpendingLogs />} />
+                                        <Route path='/budget' element={<BudgetPlans />} />
+                                        <Route path='/goals' element={<Goals />} />
+                                        <Route path='/news' element={<NewsFeed />} />
+                                        <Route path='/profile' element={<Profile />} />
+                                        <Route path='/not-found' element={<NotFound />} />
+                                        <Route path='*' element={<Navigate to='/not-found' />} />
+                                    </>
+                                ) : (
+                                    <>
+                                        <Route path='/login' element={<Login setAuth={setAuth} />} />
+                                        <Route path='*' element={<Navigate to='/login' />} />
+                                    </>
+                                    
+                                )}
+                                
+                                
                             </Routes>
                         </Router>
                         <ToastContainer />

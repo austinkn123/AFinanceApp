@@ -30,7 +30,7 @@ const settings = [
     { name: 'Log out', path: '/login' },
 ];
 
-const NavBar = ({ isDarkMode, setIsDarkMode }) => {
+const NavBar = ({ isDarkMode, setIsDarkMode, setAuth }) => {
      const [anchorElNav, setAnchorElNav] = useState(false);
      const [anchorElUser, setAnchorElUser] = useState(false);
 
@@ -166,7 +166,13 @@ const NavBar = ({ isDarkMode, setIsDarkMode }) => {
                              {settings.map((setting, index) => (
                                  <MenuItem
                                      key={`${setting}-${index}`}
-                                     onClick={() => setAnchorElUser(null)}
+                                     onClick={() => {
+                                         setAnchorElUser(null);
+                                         if (setting.name === 'Log out') {
+                                             sessionStorage.clear();
+                                             setAuth(false);
+                                         }
+                                     }}
                                      component={Link}
                                      to={`${setting.path}`}
                                  >
