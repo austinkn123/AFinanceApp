@@ -8,7 +8,6 @@ import {
     Container,
     Paper,
     Divider,
-    InputAdornment,
     IconButton
 } from '@mui/material';
 import * as yup from 'yup';
@@ -75,7 +74,7 @@ const LoginWindow = () => {
                     validationSchema={loginSchema}
                     validateOnBlur={false}
                     validateOnChange={false}
-                    onSubmit={async (values, actions) => {
+                    onSubmit={async (values) => {
                         try {
                             const response = await AwsLogin(values); // Call AwsLogin with form values
                             console.log(response.data);

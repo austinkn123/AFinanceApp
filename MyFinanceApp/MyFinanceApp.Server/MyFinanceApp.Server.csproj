@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>..\myfinanceapp.client</SpaRoot>
@@ -12,12 +12,12 @@
   <ItemGroup>
     <PackageReference Include="Amazon.AspNetCore.Identity.Cognito" Version="3.0.2" />
     <PackageReference Include="Amazon.Extensions.CognitoAuthentication" Version="2.5.5" />
-    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.7.403.7" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.403" />
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.7.404.1" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.408.1" />
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.68.0.1869" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
-      <Version>8.*-*</Version>
+      <Version>9.0.0</Version>
     </PackageReference>
   </ItemGroup>
 

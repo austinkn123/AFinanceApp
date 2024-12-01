@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from './Theme.js';
@@ -24,9 +24,11 @@ import { AuthProvider, useAuth } from './AuthContext';
 
 function App() {
     const [isDarkMode, setIsDarkMode] = useState(false);
-    //const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const isAuthenticated = !!sessionStorage.getItem('authToken');
+    const [auth, setAuth] = useState(sessionStorage.getItem('authToken'));
 
+    useEffect(() => {
+        setAuth(sessionStorage.getItem('authToken'));
+    }, []);
 
     return (
         <GoogleOAuthProvider clientId="495058288143-kfktsiduls935pmd1g15gmlrp7h96k12.apps.googleusercontent.com">
@@ -35,25 +37,17 @@ function App() {
                     <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
                     <div>
                         <Router>
-                            {isAuthenticated && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />}
+                            {auth && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />}
                             <Routes>
-                                {!isAuthenticated ? (
-                                    <>
-                                        <Route path='/login' element={<Login />} />
-                                        <Route path='*' element={<Navigate to='/login' />} />
-                                    </>
-                                ) : (
-                                    <>
-                                        <Route path='/' element={<Home />} />
-                                        <Route path='/spending' element={<SpendingLogs />} />
-                                        <Route path='/budget' element={<BudgetPlans />} />
-                                        <Route path='/goals' element={<Goals />} />
-                                        <Route path='/news' element={<NewsFeed />} />
-                                        <Route path='/profile' element={<Profile />} />
-                                        <Route path='/not-found' element={<NotFound />} />
-                                        <Route path='*' element={<Navigate to='/not-found' />} />
-                                    </>
-                                )}
+                                <Route path='/login' element={<Login />} />
+                                <Route path='/' element={<Home />} />
+                                <Route path='/spending' element={<SpendingLogs />} />
+                                <Route path='/budget' element={<BudgetPlans />} />
+                                <Route path='/goals' element={<Goals />} />
+                                <Route path='/news' element={<NewsFeed />} />
+                                <Route path='/profile' element={<Profile />} />
+                                <Route path='/not-found' element={<NotFound />} />
+                                <Route path='*' element={<Navigate to='/not-found' />} />
                             </Routes>
                         </Router>
                         <ToastContainer />

@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box } from '@mui/material';
 import LoginWindow from '../organisms/LoginWindow';
 
 const Login = () => {
+
+
+    useEffect(() => {
+        sessionStorage.clear();
+    }, []);
+
     return (
         <Box
             sx={{
