@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,6 +16,7 @@ import ApiOutlinedIcon from '@mui/icons-material/ApiOutlined';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../AuthContext';
 
 
 const pages = [
@@ -30,7 +31,8 @@ const settings = [
     { name: 'Log out', path: '/login' },
 ];
 
-const NavBar = ({ isDarkMode, setIsDarkMode, setAuth }) => {
+const NavBar = ({ isDarkMode, setIsDarkMode }) => {
+    const { logout } = useContext(AuthContext);
      const [anchorElNav, setAnchorElNav] = useState(false);
      const [anchorElUser, setAnchorElUser] = useState(false);
 
@@ -170,7 +172,7 @@ const NavBar = ({ isDarkMode, setIsDarkMode, setAuth }) => {
                                          setAnchorElUser(null);
                                          if (setting.name === 'Log out') {
                                              sessionStorage.clear();
-                                             setAuth(false);
+                                             logout();
                                          }
                                      }}
                                      component={Link}

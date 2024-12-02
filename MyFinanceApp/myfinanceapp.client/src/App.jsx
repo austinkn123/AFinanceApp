@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from './Theme.js';
@@ -20,59 +20,48 @@ import Login from './components/pages/Login.jsx';
 import NotFound from './components/pages/NotFound.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AuthProvider, useAuth } from './AuthContext';
+import { AuthProvider, AuthContext } from './AuthContext';
 
 function App() {
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const [auth, setAuth] = useState(sessionStorage.getItem('authToken'));
-
-    useEffect(() => {
-        setAuth(sessionStorage.getItem('authToken'));
-    }, [auth]);
-
+    const { isAuthenticated } = useContext(AuthContext);
+    console.log("isAuthenticated APP:", isAuthenticated);
     return (
         <GoogleOAuthProvider clientId="495058288143-kfktsiduls935pmd1g15gmlrp7h96k12.apps.googleusercontent.com">
-            <AuthProvider>
-                <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-                    <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
-                    <div>
-                        <Router>
-                            {auth && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} setAuth={setAuth} />}
-                            <Routes>
-                                {auth ? (
-                                    <>
-                                        <Route path='/' element={<Home />} />
-                                        <Route path='/spending' element={<SpendingLogs />} />
-                                        <Route path='/budget' element={<BudgetPlans />} />
-                                        <Route path='/goals' element={<Goals />} />
-                                        <Route path='/news' element={<NewsFeed />} />
-                                        <Route path='/profile' element={<Profile />} />
-                                        <Route path='/not-found' element={<NotFound />} />
-                                        <Route path='*' element={<Navigate to='/not-found' />} />
-                                    </>
-                                ) : (
-                                    <>
-                                        <Route path='/login' element={<Login setAuth={setAuth} />} />
-                                        <Route path='*' element={<Navigate to='/login' />} />
-                                    </>
+            <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+                <CssBaseline /> {/* This resets the CSS to a consistent baseline */}
+                <div>
+                    <Router>
+                        {isAuthenticated && <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />}
+                        <Routes>
+                            {isAuthenticated ? (
+                                <>
+                                    <Route path='/' element={<Home />} />
+                                    <Route path='/spending' element={<SpendingLogs />} />
+                                    <Route path='/budget' element={<BudgetPlans />} />
+                                    <Route path='/goals' element={<Goals />} />
+                                    <Route path='/news' element={<NewsFeed />} />
+                                    <Route path='/profile' element={<Profile />} />
+                                    <Route path='/not-found' element={<NotFound />} />
+                                    <Route path='*' element={<Navigate to='/not-found' />} />
+                                </>
+                            ) : (
+                                <>
+                                    <Route path='/login' element={<Login  />} />
+                                    <Route path='*' element={<Navigate to='/login' />} />
+                                </>
                                     
-                                )}
+                            )}
                                 
                                 
-                            </Routes>
-                        </Router>
-                        <ToastContainer />
-                    </div>
-                </ThemeProvider>
-            </AuthProvider>
+                        </Routes>
+                    </Router>
+                    <ToastContainer />
+                </div>
+            </ThemeProvider>
         </GoogleOAuthProvider>
 
     );
 }
-
-const AuthConsumer = ({ children }) => {
-    const auth = useAuth();
-    return children(auth);
-};
 
 export default App;
