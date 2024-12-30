@@ -82,6 +82,13 @@ if (app.Environment.IsDevelopment())
 
 }
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["Cross-Origin-Opener-Policy"] = "same-origin";
+    context.Response.Headers["Cross-Origin-Embedder-Policy"] = "require-corp";
+    await next();
+});
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

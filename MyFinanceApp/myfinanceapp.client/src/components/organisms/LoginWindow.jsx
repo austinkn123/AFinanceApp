@@ -45,13 +45,10 @@ const LoginWindow = () => {
         //redirects the user's browser to the constructed Google OAuth URL
         console.log(targetUrl);
         window.location.href = targetUrl;
+        console.log('Google login successful');
     };
 
-    const handleGoogleLoginFailure = (error) => {
-        console.error('Login failed:', error);
-        alert('Google login failed');
-    };
-
+    
 
     return (
         <Container maxWidth="sm">
@@ -150,7 +147,7 @@ const LoginWindow = () => {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={() => useGoogleLoginTokens()}
+                                    onClick={handleGoogleLoginSuccess}
                                     fullWidth
                                     sx={{ marginTop: 2 }}
                                 >
@@ -171,7 +168,7 @@ const LoginWindow = () => {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleGoogleLoginSuccess}
+                        onClick={() => console.log("SIGN UP")}
                         fullWidth
                         sx={{ marginTop: 2 }}
                     >

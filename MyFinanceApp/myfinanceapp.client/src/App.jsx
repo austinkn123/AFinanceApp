@@ -21,6 +21,7 @@ import NotFound from './components/pages/NotFound.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider, AuthContext } from './AuthContext';
+import OAuth2Callback from './components/organisms/OAuth2Callback';
 
 function App() {
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -52,7 +53,7 @@ function App() {
                                 </>
                                     
                             )}
-                                
+                            <Route path="/oauth2/callback" element={<OAuth2Callback />} />
                                 
                         </Routes>
                     </Router>
